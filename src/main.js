@@ -1,4 +1,3 @@
-import "module-alias/register.js";
 import express from "express";
 import dotenv from "dotenv";
 import Mongoose from "mongoose";
@@ -22,7 +21,7 @@ app.listen(process.env.PORT, (err) => {
    if (err) console.log("App Error", err);
 
    routes(app);
-   console.log(`app listen ${process.env.appPort}`);
+   console.log(`app listen ${process.env.PORT}`);
 
    Mongoose.connect(process.env.mongodbUrl)
       .then(() => console.log(`mongodb connected`))
