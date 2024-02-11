@@ -6,7 +6,7 @@ const route = () => {
    const app = new Router();
 
    app.get("/", (req, res) => {
-      const query = new RegExp(req.query.q ?? "a", "i");
+      const query = new RegExp(req.query.q ? req.query.q : "", "i");
 
       Promise.all([
          UserSchema.aggregate([
