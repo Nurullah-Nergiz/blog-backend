@@ -1,0 +1,16 @@
+version: 1
+backend:
+  phases:
+    preBuild: 
+      commands: 
+        - npm ci
+    build:
+      commands:
+        - npx sls create --template aws-nodejs-express --path . 
+    postBuild:  
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: /
+      files:
+        - '**/*'
