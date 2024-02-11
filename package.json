@@ -1,7 +1,7 @@
 {
    "name": "blog-backend",
    "version": "1.0.0",
-   "description": "",
+   "description": "A Node.js-based blogging application that provides users with a powerful and flexible platform to share their unique content. With a rich feature set and a user-friendly interface, it caters to the needs of bloggers. The application stands out with its fast and efficient performance, utilizing modern web technologies to deliver an interactive and user-focused experience. ",
    "main": "src/main.js",
    "type": "module",
    "scripts": {
@@ -23,6 +23,7 @@
       "mongoose": "^7.5.1"
    },
    "devDependencies": {
-      "@types/express": "^4.17.17"
+      "@types/express": "^4.17.17",
+      " @types/node": "^20.6.0"
    }
 }

@@ -10,22 +10,24 @@ const route = () => {
 	router.post("/login", (req, res) => {
 		const { email, password } = req.body;
 
-		UserSchema.findOne({ email }).then((user) => {
-			if (!user) {
-				res.status(status.NOT_FOUND).json({ message: "User not found" });
-			} else if (user.password == passToHash(password)) {
-				user.password=undefined
-				res.status(status.OK).json({
-					user,
-					authentication: setJWT({
-						user,
-						data: [Math.random().toString(32), new Date()],
-					}),
-				});
-			} else {
-				res.status(status.BAD_REQUEST).json({ message: "password" });
-			}
-		});
+		UserSchema.findOne({ email })
+         .select("+password")
+         .then((user) => {
+            if (!user) {
+               res.status(status.NOT_FOUND).json({ message: "User not found" });
+            } else if (user.password == passToHash(password)) {
+               user.password = undefined;
+               res.status(status.OK).json({
+                  user,
+                  authentication: setJWT({
+                     user,
+                     data: [Math.random().toString(32), new Date()],
+                  }),
+               });
+            } else {
+               res.status(status.BAD_REQUEST).json({ message: "password" });
+            }
+         });
 	});
 
 	router.post("/register", (req, res) => {

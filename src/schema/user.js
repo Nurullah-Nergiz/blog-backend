@@ -16,6 +16,7 @@ export default model(
             type: String,
             min: 8,
             required: "password is required",
+            select: false,
          },
          active: { type: Boolean, default: true },
       },

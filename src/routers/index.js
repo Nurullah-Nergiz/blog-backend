@@ -1,6 +1,10 @@
 import checkToAuth from "../middleware/checkToAuth.js";
 import auth from "./auth/index.js";
-import blog from "./blog/index.js";
+import comments from "./comments/index.js";
+import post from "./post/index.js";
+import usersPost from "./users/post.js";
+import users from "./users/index.js";
+import search from "./search/index.js";
 
 export default (app) => {
    const setRoutes = (routes) => {
@@ -9,5 +13,5 @@ export default (app) => {
          else app.use(prefix, route());
       });
    };
-   setRoutes([auth, blog]);
+   setRoutes([auth, post, users, usersPost, comments, search]);
 };

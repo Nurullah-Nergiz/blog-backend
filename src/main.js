@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
    res.send(process.env.npm_package_name);
 });
 
-app.listen(process.env.appPort, (err) => {
+app.listen(process.env.PORT, (err) => {
    if (err) console.log("App Error", err);
 
    routes(app);
