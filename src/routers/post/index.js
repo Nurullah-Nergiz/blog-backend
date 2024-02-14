@@ -9,14 +9,14 @@ const route = () => {
 
    app.get("/:slug", (req, res) => {
       PostSchema.findOne({
-         slug: req.params.slug,
+         _id: req.params.slug.split("-").at(-1),
       })
-         .populate([
-            {
-               path: "author",
-               model: "User",
-            },
-         ])
+         // .populate([
+         //    {
+         //       path: "author",
+         //       model: "User",
+         //    },
+         // ])
          .then((post) => {
             res.status(200).json(post);
          })
@@ -31,16 +31,9 @@ const route = () => {
       const post = new PostSchema(req.body);
       post
          .save()
-         .then((newPost) => {
-            PostSchema.findOneAndUpdate(
-               { _id: newPost._id },
-               { slug: slugify(newPost.title + "-" + newPost._id, { lower: true }) }
-            )
-               .then((updatedPost) => {
-                  console.log("post", updatedPost);
-                  res.status(201).json(updatedPost);
-               })
-               .catch((err) => res.status(500).send(err));
+         .then((p) => {
+            console.log("post", p);
+            res.status(201).json(p);
          })
          .catch((err) => {
             console.log("post Add error", err);
