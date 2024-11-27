@@ -11,7 +11,12 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
-app.use(cors());
+app.use(
+   cors({
+      origin: "*",
+      "Content-Type": "application/json",
+   })
+);
 
 app.get("/", (req, res) => {
    res.send(process.env.npm_package_name);
