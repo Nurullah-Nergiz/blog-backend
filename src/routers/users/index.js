@@ -5,9 +5,9 @@ import usersSchema from "../../schema/user.js";
 const route = () => {
    const app = new Router();
 
-   app.get("/:id", (req, res) => {
+   app.get("/:userName", (req, res) => {
       usersSchema
-         .findOne({ _id: req.params.id })
+         .findOne({ userName: req.params.userName })
          .then((user) => {
             if (user) res.status(200).json(user);
             else res.status(404).json(user);

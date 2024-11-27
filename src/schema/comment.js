@@ -1,7 +1,7 @@
 import { Schema, Types, model } from "mongoose";
 
 export default model(
-   "Comment",
+   "Comments",
    new Schema({
       text: { type: String, required: true },
       author: { type: Types.ObjectId, ref: "User", required: true },

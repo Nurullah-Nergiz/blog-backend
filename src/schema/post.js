@@ -1,6 +1,7 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, Types, VirtualType, model } from "mongoose";
 import slugify from "slugify";
 import likeSchema from "./likes.js";
+import bookmarks from "./bookmarks.js";
 
 /**
  * @type {mongoose.SchemaDefinitionProperty}
@@ -21,6 +22,13 @@ const postSchema = Schema(
          },
       },
       published: { type: Date, default: Date.now },
+      isBookmarked: {
+         type: Boolean,
+         get: () => {
+            true
+            // bookmarks.findOne({ userId: req.user.userId, postId: this._id });
+         },
+      },
       // likes: {
       //    count: {
       //       type: Number,
@@ -35,7 +43,7 @@ const postSchema = Schema(
    },
    {
       timestamps: true,
-      toJSON: { getters: true },
+      toJSON: { Virtual:true, getters: true },
    }
 );
 

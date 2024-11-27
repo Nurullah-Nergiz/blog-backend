@@ -3,8 +3,9 @@ import auth from "./auth/index.js";
 import comments from "./comments/index.js";
 import post from "./post/index.js";
 import usersPost from "./users/post.js";
-import users from "./users/index.js";
 import search from "./search/index.js";
+import users from "./users/index.js";
+import bookmarks from "./users/bookmarks.js";
 
 export default (app) => {
    const setRoutes = (routes) => {
@@ -13,5 +14,5 @@ export default (app) => {
          else app.use(prefix, route());
       });
    };
-   setRoutes([auth, post, users, usersPost, comments, search]);
+   setRoutes([auth, post, users, usersPost, comments, search,bookmarks]);
 };
