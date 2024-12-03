@@ -18,9 +18,25 @@ app.use(
    })
 );
 
+(async () => {
+   try {
+      await Mongoose.connect(process.env.mongodbUrl);
+      console.log(`mongodb connected`);
+   } catch (error) {
+      console.log(error);
+   }
+   
+   // Mongoose.connect(process.env.mongodbUrl)
+   // .then(() => console.log(`mongodb connected`))
+   // .catch((error) => console.log(error));
+
 app.get("/", (req, res) => {
    res.send(process.env.npm_package_name);
 });
+
+// app.all("*", (req, res) => {
+//    res.send("404");
+// });
 
 app.listen(process.env.PORT, (err) => {
    if (err) console.log("App Error", err);
@@ -28,11 +44,9 @@ app.listen(process.env.PORT, (err) => {
    routes(app);
    console.log(`app listen ${process.env.PORT}`);
 
-   Mongoose.connect(process.env.mongodbUrl)
-      .then(() => console.log(`mongodb connected`))
-      .catch((error) => console.log(error));
-
    //    app._router.stack.forEach(function (r) {
    //       if (r.route?.path) console.log(r.route?.path);
    //    });
 });
+
+})();
