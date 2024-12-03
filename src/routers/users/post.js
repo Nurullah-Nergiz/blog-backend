@@ -5,7 +5,7 @@ import PostSchema from "../../schema/post.js";
 const route = () => {
    const app = new Router();
 
-   app.get("/posts", (req, res) => {
+   app.get("/:id/posts", (req, res) => {
       PostSchema.find({ author: req.params.id })
          .populate([
             {
@@ -23,7 +23,7 @@ const route = () => {
 };
 
 export default {
-   prefix: "/users/:id/",
+   prefix: "/users/",
    checkAuth: false,
    route,
 };

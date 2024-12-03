@@ -8,10 +8,8 @@ import bookmarks from "./bookmarks.js";
  */
 const postSchema = Schema(
    {
-      title: { type: String, required: true },
-      description: { type: String, required: true },
-      thumbnail: { type: String },
       content: { type: String, required: true },
+      thumbnail: { type: String },
       author: { type: Types.ObjectId, ref: "User", required: true },
       // categories: [{ type: Schema.Types.Object, ref: "" }],
       tags: [{ type: String, validate: [(val) => val.length <= 10] }],
@@ -21,25 +19,8 @@ const postSchema = Schema(
             return slugify(this.title + "-" + this._id, { lower: true });
          },
       },
-      published: { type: Date, default: Date.now },
-      isBookmarked: {
-         type: Boolean,
-         get: () => {
-            true
-            // bookmarks.findOne({ userId: req.user.userId, postId: this._id });
-         },
-      },
-      // likes: {
-      //    count: {
-      //       type: Number,
-      //       default: 0,
-      //       get: async function () {
-      //          return await likeSchema.findOne({
-      //             _id: this._id,
-      //          });
-      //       },
-      //    },
-      // },
+      publishedDate: { type: Date, default: Date.now },
+      isPublished: { type: Boolean, default: true },
    },
    {
       timestamps: true,

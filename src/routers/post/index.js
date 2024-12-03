@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import PostSchema from "../../schema/post.js";
 import { Types } from "mongoose";
-import comment from "../../schema/comment.js";
 // import {} from "../../validations/post.js";
 
 const route = () => {
@@ -32,6 +31,18 @@ const route = () => {
                as: "likes",
             },
          },
+         {
+            $addFields: {
+               isLiked: {
+                  $and: [
+                     { $in: [new Types.ObjectId(req.user?._id), "$likes.author"] },
+                     // {
+                     //    $eq: ["$postId", "$_id"],
+                     // },
+                  ],
+               },
+            },
+         },
          { $skip: limit * (parseInt(page) + 1) },
          { $limit: limit },
          { $sort: { createdAt: -1 } },
@@ -48,7 +59,8 @@ const route = () => {
                slugs: 1,
                published: 1,
                likeCount: { $size: "$likes" },
-               comments:1,
+               isLiked: 1,
+               comments: 1,
                // totalDocs: 1,
                // pageCount: {
                //    $ceil: {
@@ -59,7 +71,7 @@ const route = () => {
          },
       ])
          .then((post) => {
-            res.status(200).json({limit, page: page + 1, post});
+            res.status(200).json({ limit, page: page + 1, post });
          })
          .catch((err) => {
             console.log("post get slug error", err);
@@ -72,52 +84,56 @@ const route = () => {
          { $match: { _id: new Types.ObjectId(req.params.slug.split("-").at(-1)) } },
          {
             $lookup: {
+               from: "comments",
+               localField: "_id",
+               foreignField: "postId",
+               pipeline: [
+                  { $limit: 10 },
+                  {
+                     $sort: { createdAt: -1 },
+                  },
+               ],
+               as: "comments",
+            },
+         },
+         {
+            $lookup: {
                from: "likes", // Assuming your Likes model is in the same database
-               localField: "likes",
-               foreignField: "_id",
+               localField: "_id",
+               foreignField: "postId",
                as: "likes",
             },
          },
          {
             $lookup: {
-               from: "comments", // Assuming your Likes model is in the same database
+               from: "bookmarks", // Assuming your Likes model is in the same database
                localField: "_id",
                foreignField: "postId",
-               as: "comments",
-               pipeline: [
-                  {
-                     $sort: { createdAt: -1 },
-                  },
-                  { $limit: 10 },
-               ],
+               as: "bookmarks",
             },
          },
          {
             $addFields: {
                isLiked: {
-                  $in: [new Types.ObjectId(req.user?._id), "$likes.userId"],
+                  $in: [new Types.ObjectId(req.user?._id), "$likes.author"],
+               },
+               isBookmarked: {
+                  $in: [new Types.ObjectId(req.user?._id), "$bookmarks.userId"],
                },
             },
          },
          {
             $project: {
-               _id: 1,
-               title: 1,
-               description: 1,
-               thumbnail: 1,
-               content: 1,
-               author: 1,
-               categories: 1,
-               tags: 1,
-               slugs: 1,
-               published: 1,
-               likeCount: { $size: "$likes" },
-               isLiked: 1,
+               likes:0,
+               bookmarks:0,
             },
          },
       ])
          .then((post) => {
-            res.status(200).json(post);
+            if (post.length === 0) {
+               return res.status(404).json({ message: "Post not found" });
+            }
+            res.status(200).json(post[0]);
          })
          .catch((err) => {
             console.log("post get slug error", err);
@@ -145,7 +161,7 @@ const route = () => {
 };
 
 export default {
-   prefix: "/post/",
-   checkAuth: true,
+   prefix: "/posts/",
+   isLogin: true,
    route,
 };

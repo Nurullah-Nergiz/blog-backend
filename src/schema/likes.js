@@ -9,6 +9,7 @@ export default model(
       },
       {
          versionKey: false,
+         id: false,
       }
    )
 );
