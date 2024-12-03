@@ -1,5 +1,6 @@
 node_modules/**/*
 
+.gitignore
 package-lock.json
 .env
 pnpm-lock.yaml
@@ -28,3 +29,4 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+src/routers/post/index copy.js
