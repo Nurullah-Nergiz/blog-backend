@@ -22,6 +22,16 @@ const route = () => {
                   localField: "_id",
                   foreignField: "postId",
                   pipeline: [
+                     {
+                        $lookup: {
+                           from: "users",
+                           localField: "userId",
+                           foreignField: "_id",
+                           pipeline: [{ $project: { password: 0 } }],
+                           as: "author",
+                        },
+                     },
+
                      { $limit: 10 },
                      {
                         $sort: { createdAt: -1 },
@@ -51,6 +61,7 @@ const route = () => {
                   from: "users",
                   localField: "author",
                   foreignField: "_id",
+                  pipeline: [{ $project: { password: 0 } }],
                   as: "author",
                },
             },
