@@ -18,10 +18,12 @@ export default model(
             required: "password is required",
             select: false,
          },
+         
          active: { type: Boolean, default: true },
       },
       {
          timestamps: true,
+         toJSON: { Virtual:true, getters: true },
       }
    )
 );
