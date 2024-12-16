@@ -1,3 +1,6 @@
 {
-    "thunder-client.saveToWorkspace": false
+    "thunder-client.saveToWorkspace": false,
+    "obsidian-md-vsc.defaultVault": "Obsidian Vault",
+    "obsidian-md-vsc.defaultVaultPath": "/home/nurullah/Belgeler/Obsidian Vault",
+    "obsidian-md-vsc.defaultNote": "Emegen Api"
 }

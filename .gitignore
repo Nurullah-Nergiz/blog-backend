@@ -30,3 +30,4 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 src/routers/post/index copy.js
+.vscode/settings.json
