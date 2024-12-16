@@ -27,24 +27,44 @@ const route = () => {
                },
             },
             {
-               $facet: {
-                  followerCount: [
-                     { $group: { _id: "$follower.user", count: { $sum: 1 } } },
-                     // {$rename: {count: "followerCount"}}
-                  ],
-                  followedCount: [
-                     { $group: { _id: "$follower.follower", count: { $sum: 1 } } },
-                     // {$rename: {count: "followerCount"}}
-                  
-                  ],
+               $lookup: {
+                  from: "followers",
+                  localField: "_id",
+                  foreignField: "userId",
+                  as: "followers",
+               },
+            },
+            {
+               $addFields: {
+                  isFollowing: {
+                     $in: [new Types.ObjectId(req.user?._id), "$followers.followerId"],
+                  },
+                  followersCount: { $size: "$followers" },
+                  followingCount: {
+                     $size: {
+                        $filter: {
+                           input: "$followers",
+                           as: "follower",
+                           cond: { $eq: ["$$follower.followerId", new Types.ObjectId(req.user?._id)] },
+                        },
+                     },
+                  },
+               },
+            },
+            {
+               $project: {
+                  password: 0,
+                  followers: 0,
+                  __v: 0,
                },
             },
          ])
          .then((user) => {
             if (user) res.status(200).json(user);
-            else res.status(404).json(user);
+            else res.status(404).json(user[0]);
          })
          .catch((err) => {
+            console.log("err:", err)
             res.status(500).json(err);
          });
    });

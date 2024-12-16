@@ -7,6 +7,18 @@ export default model(
          firstName: { type: String, required: "firstName is required" },
          lastName: { type: String, required: "lastName is required" },
          userName: { type: String, unique: true, required: "userName is required" },
+         bio: {
+            type: String,
+            default: "",
+         },
+         profilePicture: {
+            type: String,
+            default: "",
+         },
+         coverPicture: {
+            type: String,
+            default: "",
+         },
          email: {
             type: String,
             required: "Email address is required",
