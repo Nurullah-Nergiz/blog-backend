@@ -13,8 +13,8 @@ export const validateToRegister = (data) =>
    joi
       .object()
       .keys({
-         firtName: joi.string().min(4).max(25).required(),
-         lastName: joi.string().min(4).max(25).required(),
+         name: joi.string().min(4).max(25).required(),
+         userName: joi.string().min(4).max(25).required(),
          email: joi.string().email().required(),
          password: joi.string().min(8).required(),
       })

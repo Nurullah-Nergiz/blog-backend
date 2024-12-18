@@ -4,9 +4,19 @@ export default model(
    "User",
    new Schema(
       {
-         firstName: { type: String, required: "firstName is required" },
-         lastName: { type: String, required: "lastName is required" },
+         name: { type: String, required: "name is required" },
          userName: { type: String, unique: true, required: "userName is required" },
+         email: {
+            type: String,
+            required: "Email address is required",
+            unique: true,
+         },
+         password: {
+            type: String,
+            min: 8,
+            required: "password is required",
+            select: false,
+         },
          bio: {
             type: String,
             default: "",
@@ -19,23 +29,19 @@ export default model(
             type: String,
             default: "",
          },
-         email: {
+         website: {
             type: String,
-            required: "Email address is required",
-            unique: true,
+            default: "",
          },
-         password: {
+         location: {
             type: String,
-            min: 8,
-            required: "password is required",
-            select: false,
+            default: "",
          },
-         
          active: { type: Boolean, default: true },
       },
       {
          timestamps: true,
-         toJSON: { Virtual:true, getters: true },
+         toJSON: { Virtual: true, getters: true },
       }
    )
 );

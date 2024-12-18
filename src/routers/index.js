@@ -8,7 +8,9 @@ import bookmarks from "./bookmarks/index.js";
 
 import users from "./users/index.js";
 import usersPost from "./users/post.js";
-import usersFollow from "./users/follow.js";
+import usersFollowPost from "./users/follows/post.js";
+import usersFollowGet from "./users/follows/get.js";
+
 
 import search from "./search/index.js";
 import explore from "./explore/index.js";
@@ -20,5 +22,5 @@ export default (app) => {
          else app.use(prefix, route());
       });
    };
-   setRoutes([auth, post, postLike, users, usersPost, usersFollow, comments, search, explore, bookmarks]);
+   setRoutes([auth, post, postLike, users, usersPost, usersFollowPost,usersFollowGet, comments, search, explore, bookmarks]);
 };
