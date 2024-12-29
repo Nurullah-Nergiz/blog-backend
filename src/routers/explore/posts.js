@@ -13,7 +13,7 @@ const route = () => {
          .aggregate([
             {
                $match: {
-                  $and: [{ author: { $ne: req.user._id } }],
+                  $and: [{ author: { $ne: req.user?._id } }],
                },
             },
             {
