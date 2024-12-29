@@ -11,16 +11,29 @@ import usersPost from "./users/post.js";
 import usersFollowPost from "./users/follows/post.js";
 import usersFollowGet from "./users/follows/get.js";
 
-
 import search from "./search/index.js";
-import explore from "./explore/index.js";
+import explorePosts from "./explore/posts.js";
+import exploreUsers from "./explore/users.js";
 
 export default (app) => {
    const setRoutes = (routes) => {
-      routes.map(({ prefix, route, isLogin }) => {
-         if (isLogin) app.use(prefix, checkToAuth, route());
+      routes.map(({ prefix, route, isLogin = false }) => {
+         if (isLogin === true) app.use(prefix, checkToAuth, route());
          else app.use(prefix, route());
       });
    };
-   setRoutes([auth, post, postLike, users, usersPost, usersFollowPost,usersFollowGet, comments, search, explore, bookmarks]);
+   setRoutes([
+      auth,
+      post,
+      postLike,
+      users,
+      usersPost,
+      usersFollowPost,
+      usersFollowGet,
+      comments,
+      search,
+      explorePosts,
+      exploreUsers,
+      bookmarks,
+   ]);
 };
