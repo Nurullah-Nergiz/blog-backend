@@ -5,6 +5,7 @@ import helmet from "helmet";
 import cors from "cors";
 
 import routes from "./routers/index.js";
+import checkUserLogin from "./middleware/verifyUserLogin.js";
 
 const app = express();
 dotenv.config();
@@ -21,32 +22,28 @@ app.use(
 (async () => {
    try {
       await Mongoose.connect(process.env.mongodbUrl);
+      console.clear();
       console.log(`mongodb connected`);
    } catch (error) {
       console.log(error);
    }
-   
-   // Mongoose.connect(process.env.mongodbUrl)
-   // .then(() => console.log(`mongodb connected`))
-   // .catch((error) => console.log(error));
 
-app.get("/", (req, res) => {
-   res.send(process.env.npm_package_name);
-});
+   app.listen(process.env.PORT, (err) => {
+      routes(app);
 
-// app.all("*", (req, res) => {
-//    res.send("404");
-// });
+      if (err) console.log("App Error", err);
+      console.log(`app listen ${process.env.PORT}`);
 
-app.listen(process.env.PORT, (err) => {
-   if (err) console.log("App Error", err);
+      // app._router.stack.forEach(function (r) {
+      //    if (r.route?.path) console.log(r.route?.path);
+      // });
+   });
 
-   routes(app);
-   console.log(`app listen ${process.env.PORT}`);
-
-   //    app._router.stack.forEach(function (r) {
-   //       if (r.route?.path) console.log(r.route?.path);
-   //    });
-});
-
+   app.get("/", checkUserLogin, (req, res) => {
+      res.status(200).json({
+         name: process.env.npm_package_name,
+         version: process.env.npm_package_version,
+         description: process.env.npm_package_description,
+      });
+   });
 })();
