@@ -46,28 +46,30 @@ const route = () => {
    });
 
    app.delete("/:postId", (req, res) => {
-      const filter = { userId: req.user._id, postId: req.params.postId };
-      bookmarkSchema
-         .findOne(filter)
-         .then((bookmark) => {
-            if (!bookmark) {
-               res.status(404).json(filter);
-            } else {
-               bookmarkSchema
-                  .deleteOne(filter)
-                  .then((data) => {
-                     res.status(202).json(data);
-                  })
-                  .catch((err) => {
-                     console.log("err:", err);
-                     res.status(500).json(err);
-                  });
-            }
-         })
-         .catch((err) => {
-            console.log("err:", err);
-            res.status(500).json(err);
-         });
+      if (req.verifyUserLogin()) {
+         const filter = { userId: req.user._id, postId: req.params.postId };
+         bookmarkSchema
+            .findOne(filter)
+            .then((bookmark) => {
+               if (!bookmark) {
+                  res.status(404).json(filter);
+               } else {
+                  bookmarkSchema
+                     .deleteOne(filter)
+                     .then((data) => {
+                        res.status(202).json(data);
+                     })
+                     .catch((err) => {
+                        console.log("err:", err);
+                        res.status(500).json(err);
+                     });
+               }
+            })
+            .catch((err) => {
+               console.log("err:", err);
+               res.status(500).json(err);
+            });
+      }
    });
 
    return app;
