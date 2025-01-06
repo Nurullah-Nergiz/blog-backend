@@ -18,3 +18,13 @@ export const validateToRegister = (data) =>
          password: joi.string().min(8).required(),
       })
       .validate(data);
+
+export const validateToResetPassword = (data) => {
+   // console.log("data", data);
+   joi.object()
+      .keys({
+         newPassword: joi.string().min(8).required(),
+         oldPassword: joi.string().min(8).required(),
+      })
+      .validate(data);
+};

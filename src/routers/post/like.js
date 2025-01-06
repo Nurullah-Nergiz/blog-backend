@@ -7,7 +7,7 @@ const route = () => {
    const app = new Router();
 
    app.post("/:id/like", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const filter = { postId: req.params.id, author: req.user._id };
          likesSchema
             .findOne(filter)
@@ -33,7 +33,7 @@ const route = () => {
    });
 
    app.post("/:id/unlike", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const filter = { postId: req.params.id, author: req.user._id };
          likesSchema
             .findOne(filter)

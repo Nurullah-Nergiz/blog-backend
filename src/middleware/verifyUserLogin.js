@@ -1,7 +1,7 @@
 import validateAuthToken from "../utils/validateAuthToken.js";
 
 export default function (req, res, next) {
-   req.verifyUserLogin = () => {
+   req.checkUserAuthentication = () => {
       const userAuthStatus = validateAuthToken(req.headers["authentication"]);
       if (userAuthStatus === false) {
          res.status(403).json({
@@ -9,7 +9,7 @@ export default function (req, res, next) {
          });
          return false;
       } else if (userAuthStatus === null) {
-         res.status(403).json({
+         res.status(401).json({
             message: "authToken is required",
          });
          return false;

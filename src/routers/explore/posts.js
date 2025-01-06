@@ -8,7 +8,7 @@ const route = () => {
    const app = new Router();
 
    app.get("/", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const {
             error,
             value: { page = 0, limit = 12 },

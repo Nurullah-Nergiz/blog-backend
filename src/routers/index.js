@@ -2,6 +2,7 @@ import initializeRoutes from "../utils/initializeRoutes.js";
 import notFound from "./not-found.js";
 
 import auth from "./auth/index.js";
+import authPasswords from "./auth/password.js";
 
 import post from "./post/index.js";
 import postLike from "./post/like.js";
@@ -20,6 +21,7 @@ import exploreUsers from "./explore/users.js";
 export default (app) => {
    initializeRoutes(app, [
       auth,
+      authPasswords,
       post,
       postLike,
       users,

@@ -7,7 +7,7 @@ const route = () => {
    const app = new Router();
 
    app.post("/:id/follow", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const filter = { user: req.params.id, follower: req.user?._id };
          followersSchema.findOne(filter).then((result) => {
             if (result) {
@@ -22,7 +22,7 @@ const route = () => {
    });
 
    app.post("/:id/unfollow", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const filter = { user: req.params.id, follower: req.user._id };
          followersSchema.findOneAndDelete(filter).then((result) => {
             if (result) {

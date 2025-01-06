@@ -7,7 +7,7 @@ const route = () => {
    const app = new Router();
 
    app.get("/:id", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          commentSchema
             .find({ postId: req.params.id })
             .populate("userId")
@@ -23,7 +23,7 @@ const route = () => {
    });
 
    app.post("/:id", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          console.log(req.body);
          const comments = new commentSchema({ userId: req.user?._id, postId: req.params.id, ...req.body });
          comments

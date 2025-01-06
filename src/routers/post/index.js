@@ -9,7 +9,7 @@ const route = () => {
    const app = new Router();
 
    app.get("/", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const {
             error,
             value: { page = 0, limit = 10 },
@@ -84,7 +84,7 @@ const route = () => {
    });
 
    app.get("/:slug", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          PostSchema.aggregate([
             { $match: { _id: new Types.ObjectId(req.params.slug.split("-").at(-1)) } },
             {
@@ -149,7 +149,7 @@ const route = () => {
    });
 
    app.post("/", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          // res.json(slugify(req.body.title,{lower:true}))
          const post = new PostSchema(req.body);
          post

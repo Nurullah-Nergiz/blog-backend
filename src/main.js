@@ -5,7 +5,6 @@ import helmet from "helmet";
 import cors from "cors";
 
 import routes from "./routers/index.js";
-import checkUserLogin from "./middleware/verifyUserLogin.js";
 
 const app = express();
 dotenv.config();
@@ -31,7 +30,7 @@ app.use(
    app.listen(process.env.PORT, (err) => {
       routes(app);
 
-      if (err) console.log("App Error", err);
+      // if (err) console.log("App Error", err);
       console.log(`app listen ${process.env.PORT}`);
 
       // app._router.stack.forEach(function (r) {
@@ -39,7 +38,7 @@ app.use(
       // });
    });
 
-   app.get("/", checkUserLogin, (req, res) => {
+   app.get("/", (req, res) => {
       res.status(200).json({
          name: process.env.npm_package_name,
          version: process.env.npm_package_version,

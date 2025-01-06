@@ -10,7 +10,7 @@ const route = () => {
    const app = new Router();
 
    app.get("/", async (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const {
             error,
             value: { page = 0, limit = 12 },
@@ -43,7 +43,7 @@ const route = () => {
                      $project: {
                         _id: 1,
                         name: 1,
-                        username: 1,
+                        userName: 1,
                         profilePic: 1,
                      },
                   },

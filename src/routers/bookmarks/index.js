@@ -46,7 +46,7 @@ const route = () => {
    });
 
    app.delete("/:postId", (req, res) => {
-      if (req.verifyUserLogin()) {
+      if (req.checkUserAuthentication()) {
          const filter = { userId: req.user._id, postId: req.params.postId };
          bookmarkSchema
             .findOne(filter)
