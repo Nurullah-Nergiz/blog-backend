@@ -7,25 +7,38 @@ const route = () => {
    /** @type {import('express').Router} */
    const app = new Router();
 
-   app.post("/reset-password", (req, res) => {
+   app.post("/reset-passwords", (req, res) => {
       if (req.checkUserAuthentication()) {
-         const data = validateToResetPassword(req.body);
-         res.status(200).json({
-            message: "Password Changed",
-            body: req.body,
-            data,
-            //    newPass,
-            //     oldPass,
-            //    err: error
-         });
-         //     if (!error) {
-         // } else {
-         //     res.status(400).json({ message: error });
-         //     return;
-         //  }
-         //  UserSchema.findOneAndUpdate({ email: req.user.email }, { password: passToHash(req.body.newPassword) });
-         res.status(200).json(req.user);
+         const {
+            error,
+            value: { oldPassword, newPassword },
+         } = validateToResetPassword(req.body);
+         if (!error) {
+            if (oldPassword === newPassword) {
+               UserSchema.findByIdAndUpdate(req.user._id, { password: passToHash(newPassword) })
+                  .then(() => {
+                     res.status(200).json({
+                        message: "Password has been updated",
+                     });
+                  })
+                  .catch((err) => {
+                     res.status(400).json({
+                        message: "Error while updating password",
+                        error: err,
+                     });
+                  });
+            } else {
+               res.status(400).json({
+                  message: "Old password and new password should not be same",
+               });
+            }
+         } else {
+            res.status(400).json({
+               message: error.details[0].message,
+            });
+         }
       }
+      //  UserSchema.findOneAndUpdate({ email: req.user.email }, { password: passToHash(req.body.newPassword) });
    });
 
    app.post("/", (req, res) => {

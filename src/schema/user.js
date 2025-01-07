@@ -8,6 +8,7 @@ export default model(
       userName: {
          type: String,
          unique: true,
+         default: (user) => slugify(`${user.name} - ${user._id}`, { lower: true }),
       },
       tags: [
          {

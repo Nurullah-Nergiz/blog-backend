@@ -5,12 +5,12 @@ import { passToHash, setJWT } from "../../utils/hash.js";
 import status from "http-status";
 
 const route = () => {
-	const router = Router();
+   const router = Router();
 
-	router.post("/login", (req, res) => {
-		const { email, password } = req.body;
+   router.post("/login", (req, res) => {
+      const { email, password } = req.body;
 
-		UserSchema.findOne({ email })
+      UserSchema.findOne({ email })
          .select("+password")
          .then((user) => {
             if (!user) {
@@ -19,45 +19,43 @@ const route = () => {
                user.password = undefined;
                res.status(status.OK).json({
                   user,
-                  authentication: setJWT({
-                     user,
-                     data: [Math.random().toString(32), new Date()],
-                  }),
+                  authentication: setJWT(user),
                });
             } else {
                res.status(status.BAD_REQUEST).json({ message: "password" });
             }
          });
-	});
+   });
 
-	router.post("/register", (req, res) => {
-		// validations data
-		const { err, value } = validateToRegister(req.body);
+   router.post("/register", (req, res) => {
+      // validations data
+      const { error, value } = validateToRegister(req.body);
 
-		// password hashing
-		value.password = passToHash(value.password);
+      // password hashing
+      value.password = passToHash(value.password);
 
-		if (!err) {
-			// user added to database
-			const user = new UserSchema(value);
-			user.save()
-				.then((user) =>
-					res.status(status.CREATED).json({
-						user,
-						authentication: setJWT(user),
-					}),
-				)
-				.catch((err) => res.json("Error " + err));
-		} else {
-			// validations error
-			res.status(status.BAD_REQUEST).json({ message: err });
-		}
-	});
+      if (!error) {
+         // user added to database
+         const user = new UserSchema(value);
+         user
+            .save()
+            .then((user) =>
+               res.status(status.CREATED).json({
+                  user,
+                  authentication: setJWT(user),
+               })
+            )
+            .catch((err) => res.status(500).json({ message: err }));
+      } else {
+         // validations error
+         res.status(status.BAD_REQUEST).json({ message: error });
+      }
+   });
 
-	return router;
+   return router;
 };
 
 export default {
-	prefix: "/auth/",
-	route,
+   prefix: "/auth/",
+   route,
 };

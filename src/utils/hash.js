@@ -9,11 +9,22 @@ import jwt from "jsonwebtoken";
 export const passToHash = (pass) => createHmac("sha512", process.env.passwordSalt).update(pass).digest("hex");
 
 /**
- *
- * @param {firstName,lastName,email,password,active} user
+ * @param { Object } user
+ * @param { String } user.name
+ * @param { String } user.userName
+ * @param { String } user.email
+ * @param { String } user.password
+ * @param { Boolean } user.active
  * @returns String
  */
 export const setJWT = (user) => {
    user.password = new Date();
-   return jwt.sign({ ...user }, process.env.jwtSalt);
+   return jwt.sign(
+      {
+         ...user,
+         data: [Math.random().toString(32), new Date()],
+      },
+      process.env.jwtSalt
+   );
 };
+

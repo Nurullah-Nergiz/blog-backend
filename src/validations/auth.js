@@ -13,7 +13,7 @@ export const validateToRegister = (data) =>
    joi
       .object()
       .keys({
-         userName: joi.string().min(4).max(25).required(),
+         name: joi.string().min(4).max(25).required(),
          email: joi.string().email().required(),
          password: joi.string().min(8).required(),
       })
@@ -21,7 +21,8 @@ export const validateToRegister = (data) =>
 
 export const validateToResetPassword = (data) => {
    // console.log("data", data);
-   joi.object()
+   return joi
+      .object()
       .keys({
          newPassword: joi.string().min(8).required(),
          oldPassword: joi.string().min(8).required(),
