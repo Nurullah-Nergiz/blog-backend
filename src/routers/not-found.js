@@ -6,8 +6,8 @@ const route = () => {
 
    app.all("*", (req, res) => {
       res.status(200).json({
+         message: "EndPoint Not Found",
          url: req.url,
-         message: "Page Not Found",
          method: req.method,
          status: 404,
       });
@@ -18,6 +18,5 @@ const route = () => {
 
 export default {
    prefix: "",
-   isLogin: true,
    route,
 };
